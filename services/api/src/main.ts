@@ -6,19 +6,12 @@ import { BootStrapService } from './bootstrap.service';
 
 async function bootstrap() {
   try {
-    const app = await NestFactory.create(AppModule);
+    const app = await NestFactory.create(AppModule, { cors: true });
 
     const PORT = process.env.PORT || null;
     if (!PORT) throw new Error('No port specified');
 
-    app.enableCors({
-      origin: (origin, cb) => {
-        cb(null, true);
-      },
-      allowedHeaders:
-        'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, Observe',
-      methods: 'GET,PUT,POST,DELETE,UPDATE,OPTIONS',
-    });
+    app.enableCors();
 
     app.useGlobalPipes(
       new ValidationPipe({
