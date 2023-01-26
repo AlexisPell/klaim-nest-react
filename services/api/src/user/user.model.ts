@@ -1,11 +1,4 @@
-import {
-  BelongsToMany,
-  Column,
-  DataType,
-  HasMany,
-  Model,
-  Table,
-} from 'sequelize-typescript';
+import { Column, DataType, Model, Table } from 'sequelize-typescript';
 import { Optional } from 'sequelize';
 import { ApiProperty } from '@nestjs/swagger';
 

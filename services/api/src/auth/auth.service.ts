@@ -24,7 +24,6 @@ export class AuthService {
 
   async registration(userDto: CreateUserDto) {
     const candidate = await this.userService.getUserByEmail(userDto.email);
-    console.log('CND: ', candidate);
     if (candidate) {
       throw new BadRequestException(
         'User with such credentials already exists',
@@ -41,7 +40,6 @@ export class AuthService {
 
   async getMyProfile(email: string) {
     const user = await this.userService.getUserByEmail(email);
-    console.log('USER', user);
     return user;
   }
 
