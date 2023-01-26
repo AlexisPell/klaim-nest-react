@@ -1,0 +1,58 @@
+version: '3.7'
+
+services:
+  # DB
+  postgres:
+    container_name: postgres
+    image: postgres:12
+    env_file:
+      - ./.env
+    environment:
+      PG_DATA: /var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: always
+    networks:
+      - webnetwork
+
+  pgadmin:
+    image: dpage/pgadmin4
+    depends_on:
+      - postgres
+    ports:
+      - '5555:80'
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    restart: unless-stopped
+    networks:
+      - webnetwork
+
+  # BACK
+  api:
+    container_name: api
+    hostname: api
+    build: ./services/api
+    volumes:
+      - ./services/api:/app
+      # - /app/node_modules
+    ports:
+      - 8080:8080
+    restart: always
+    env_file:
+      - ./.env
+    networks:
+      - webnetwork
+    depends_on:
+      - postgres
+      # - redis
+
+volumes:
+  pgdata:
+
+networks:
+  webnetwork:
+    driver: bridge
+    # external: true
