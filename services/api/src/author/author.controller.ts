@@ -1,7 +1,6 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth-guard';
-import { Author } from './author.model';
 import { AuthorService } from './author.service';
 import { AuthorDtoResponse } from './dto/author-res.dto';
 
@@ -10,11 +9,12 @@ import { AuthorDtoResponse } from './dto/author-res.dto';
 export class AuthorController {
   constructor(private authorService: AuthorService) {}
 
+  @ApiOperation({ summary: 'Get random author' })
   @ApiOkResponse({ type: AuthorDtoResponse })
   @Get()
   @UseGuards(JwtAuthGuard)
   async getRandomAuthor() {
-    const author = await this.authorService.getRandomAuthor();
-    return new AuthorDtoResponse(author);
+    const randomAuthor = await this.authorService.getRandomAuthor();
+    return new AuthorDtoResponse(randomAuthor);
   }
 }

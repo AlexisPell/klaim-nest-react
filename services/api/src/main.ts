@@ -20,11 +20,6 @@ async function bootstrap() {
       methods: 'GET,PUT,POST,DELETE,UPDATE,OPTIONS',
     });
 
-    const options = new DocumentBuilder()
-      .setTitle('Klaim api')
-      .setVersion('1.0.0')
-      .build();
-
     app.useGlobalPipes(
       new ValidationPipe({
         transform: true,
@@ -42,6 +37,12 @@ async function bootstrap() {
         exposeUnsetFields: false,
       }),
     );
+
+    const options = new DocumentBuilder()
+      .setTitle('Klaim api')
+      .setVersion('1.0.0')
+      .addBearerAuth()
+      .build();
 
     const document = SwaggerModule.createDocument(app, options);
     SwaggerModule.setup('docs', app, document);

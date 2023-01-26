@@ -1,4 +1,5 @@
 import { forwardRef, Module } from '@nestjs/common';
+import { JwtModule } from '@nestjs/jwt';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { AuthorModule } from 'src/author/author.module';
 import { QuoteController } from './quote.controller';
@@ -9,6 +10,7 @@ import { QuoteService } from './quote.service';
   imports: [
     SequelizeModule.forFeature([Quote]),
     forwardRef(() => AuthorModule),
+    JwtModule,
   ],
   controllers: [QuoteController],
   providers: [QuoteService],

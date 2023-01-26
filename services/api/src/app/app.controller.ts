@@ -1,7 +1,6 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
-import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { Controller, Get } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiOkResponse } from '@nestjs/swagger';
 import { AppService } from './app.service';
-import { JwtAuthGuard } from './../auth/guards/jwt-auth-guard';
 
 @ApiTags('Root api')
 @Controller()
@@ -15,7 +14,7 @@ export class AppController {
   }
 
   @ApiOperation({ summary: 'Info' })
-  @UseGuards(JwtAuthGuard)
+  @ApiOkResponse({ type: String })
   @Get('info')
   getInfo(): string {
     return this.appService.getInfo();

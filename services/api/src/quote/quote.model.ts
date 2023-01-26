@@ -37,7 +37,7 @@ export class Quote
   })
   id: number;
 
-  @ApiProperty({ example: 'my-pswd', description: 'Password' })
+  @ApiProperty({ example: 'Code fast die old', description: 'qutation itself' })
   @Column({ type: DataType.STRING, allowNull: false })
   quote: string;
 

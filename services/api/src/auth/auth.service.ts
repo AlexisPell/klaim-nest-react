@@ -7,7 +7,7 @@ import {
 import * as bcrypt from 'bcryptjs';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { UserService } from 'src/user/user.service';
-import { User } from 'src/user/user.model';
+import { User, UserAttributes } from 'src/user/user.model';
 import { LoginDto } from './dto/login.dto';
 
 @Injectable()
@@ -24,6 +24,7 @@ export class AuthService {
 
   async registration(userDto: CreateUserDto) {
     const candidate = await this.userService.getUserByEmail(userDto.email);
+    console.log('CND: ', candidate);
     if (candidate) {
       throw new BadRequestException(
         'User with such credentials already exists',
@@ -38,14 +39,20 @@ export class AuthService {
     return this.generateToken(user);
   }
 
-  private async generateToken(user: User) {
+  async getMyProfile(email: string) {
+    const user = await this.userService.getUserByEmail(email);
+    console.log('USER', user);
+    return user;
+  }
+
+  private async generateToken(user: User | UserAttributes) {
     const payload = { email: user.email, id: user.id };
     return {
       token: this.jwtService.sign(payload),
     };
   }
 
-  private async validateUser(userDto: Partial<CreateUserDto>): Promise<User> {
+  private async validateUser(userDto: Partial<CreateUserDto>) {
     const user = await this.userService.getUserByEmail(userDto.email);
     if (!user)
       throw new BadRequestException('User with such credentials not found');

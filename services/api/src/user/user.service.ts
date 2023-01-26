@@ -1,4 +1,4 @@
-import { User } from './user.model';
+import { User, UserAttributes } from './user.model';
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -18,10 +18,14 @@ export class UserService {
     return user as User;
   }
 
-  async getUserByEmail(email: string) {
-    const user = await this.userRepository.findOne({
-      where: { email },
-    });
-    return user;
+  async getUserByEmail(email: string): Promise<UserAttributes | null> {
+    try {
+      const { dataValues: user } = await this.userRepository.findOne({
+        where: { email },
+      });
+      return user;
+    } catch (error) {
+      return null;
+    }
   }
 }

@@ -1,5 +1,6 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import { Sequelize } from 'sequelize';
 import { AuthorService } from 'src/author/author.service';
 import { quotes } from './data/default';
 import { Quote } from './quote.model';
@@ -19,7 +20,11 @@ export class QuoteService {
     }
   }
 
-  getRandomAuthor() {
-    console.log('qe');
+  async getRandomQuoteByAuthorId(authorId: number) {
+    const { dataValues: randomQuote } = await this.quoteRepository.findOne({
+      where: { authorId },
+      order: Sequelize.literal('random()'),
+    });
+    return randomQuote;
   }
 }

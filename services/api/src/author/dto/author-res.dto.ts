@@ -14,19 +14,18 @@ class AuthorResDto extends PickType(Author, [
   }
 }
 
-class DataResDto {
+class AuthorDataResDto {
   @ApiProperty({ type: AuthorResDto })
   @Type(() => AuthorResDto)
   author: AuthorResDto;
 }
-
 export class AuthorDtoResponse {
   @ApiProperty({ type: Boolean })
   success: boolean;
 
-  @ApiProperty({ type: DataResDto })
-  @Type(() => DataResDto)
-  data: DataResDto;
+  @ApiProperty({ type: AuthorDataResDto })
+  @Type(() => AuthorDataResDto)
+  data: AuthorDataResDto;
 
   constructor(author: Partial<Author>) {
     Object.assign(this, {
@@ -37,15 +36,3 @@ export class AuthorDtoResponse {
     });
   }
 }
-
-// BUG in next.js swagger module.
-// in GET /author @ApiOkResponse({ type: AuthorDtoResponse })
-// and in POST /user @ApiCreatedResponse({ type: UserDtoResponse })
-
-// In both - AuthorDtoResponse and UserDtoResponse we
-// got inner Class, NAMED same in both places: "DataResDto"
-
-// And in this case in our swagger docs we always got UserResDto for
-// both: GET /author and POST /user.
-
-// Renaming some of these classes solves the problem. Classes has NO intersections.

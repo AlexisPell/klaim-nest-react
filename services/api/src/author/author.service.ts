@@ -25,4 +25,9 @@ export class AuthorService {
     });
     return randomAuthor;
   }
+
+  async getAuthorById(id: number) {
+    const { dataValues: author } = await this.authorRepository.findByPk(id);
+    return author;
+  }
 }
