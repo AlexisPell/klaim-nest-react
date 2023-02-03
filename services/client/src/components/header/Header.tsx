@@ -13,14 +13,12 @@ export const Header: React.FC<HeaderProps> = ({}) => {
   const [_, setAlert] = useAtom(setAlertAtom);
   const [IsLoggedIn, setIsLoggedIn] = useState(!!window.localStorage.getItem('token'));
 
-  console.log('LOCATION', location);
-
   useEffect(() => {
     setIsLoggedIn(!!window.localStorage.getItem('token'));
   }, [location.pathname]);
 
   const onSignOut = () => {
-    window.localStorage.setItem('token', '');
+    window.localStorage.removeItem('token');
     navigate('/');
     setAlert({ type: 'warning', message: 'Successfully logged out' });
   };

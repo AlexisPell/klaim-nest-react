@@ -5,7 +5,6 @@ interface NotFoundProps {}
 
 export const NotFound: React.FC<NotFoundProps> = ({}) => {
   useEffect(() => {
-    console.log('WTF?');
     redirect('/');
   }, []);
   return <div></div>;
